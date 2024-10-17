@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookRentalAPI", "BookRentalAPI.csproj", "{B29B6AE3-BC04-493F-BA16-69DEDCEFD760}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookRentalAPI", "BookRentalAPI.csproj", "{B29B6AE3-BC04-493F-BA16-69DEDCEFD760}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookRental.EFCore", "..\BookRental.EFCore\BookRental.EFCore.csproj", "{C070CDA6-9DC6-4822-8073-A7BAF7F8E3A9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookRental.EFCore", "..\BookRental.EFCore\BookRental.EFCore.csproj", "{C070CDA6-9DC6-4822-8073-A7BAF7F8E3A9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookRental.BusinessLayer", "..\BookRental.BusinessLayer\BookRental.BusinessLayer.csproj", "{067878B3-4346-4B0C-8EF4-7F35F811824C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{C070CDA6-9DC6-4822-8073-A7BAF7F8E3A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C070CDA6-9DC6-4822-8073-A7BAF7F8E3A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C070CDA6-9DC6-4822-8073-A7BAF7F8E3A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{067878B3-4346-4B0C-8EF4-7F35F811824C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{067878B3-4346-4B0C-8EF4-7F35F811824C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{067878B3-4346-4B0C-8EF4-7F35F811824C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{067878B3-4346-4B0C-8EF4-7F35F811824C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

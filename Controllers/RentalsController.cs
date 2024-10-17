@@ -1,6 +1,7 @@
 ﻿using BookRental.EFCore;
 using BookRentalAPI.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 
 namespace BookRentalAPI.Controllers
@@ -54,5 +55,13 @@ namespace BookRentalAPI.Controllers
 
             return Ok("Book returned successfully");
         }
+
+        // GET: api/RentalHistory
+        [HttpGet("rentalHistory")]
+        public async Task<IEnumerable<Rental>> Get()
+        {
+            return await _context.Rentals.ToListAsync();
+        }
+
     }
 }
