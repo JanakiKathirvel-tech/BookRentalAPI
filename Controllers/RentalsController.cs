@@ -1,8 +1,12 @@
-﻿using BookRental.EFCore;
+﻿using BookRental.BusinessLayer;
+using BookRental.BusinessLayer.Interfaces;
+using BookRental.EFCore;
+using BookRental.EFCore.DTO;
 using BookRentalAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Net;
 
 namespace BookRentalAPI.Controllers
 {
@@ -11,48 +15,56 @@ namespace BookRentalAPI.Controllers
     public class RentalsController : ControllerBase
     {
         private readonly BookRentalDBContext _context;
+        private readonly IBookRepository _bookRepository;
+        private readonly IRentalRepository _rentalRepository;       
 
-        public RentalsController(BookRentalDBContext context)
+        public RentalsController(BookRentalDBContext context, IBookRepository bookRepository, IRentalRepository rentalRepository)
         {
             _context = context;
+            _bookRepository = bookRepository;
+            _rentalRepository = rentalRepository;
         }
 
         [HttpPost("rent/{bookId}")]
         public async Task<ActionResult> RentBook(int bookId, int userId)
         {
-            var book = await _context.Books.FindAsync(bookId);
-            if (book == null || !book.IsAvailable)
-                return BadRequest("Book is not available");
 
-            var rental = new Rental
+            try
+            {              
+
+                var bookToRental = await _bookRepository.GetBookbyId(bookId);
+
+                if (bookToRental == null)
+                    return NotFound($"Book with Id = {bookId} not found");
+
+                var rent = await _rentalRepository.RentBook(bookId, userId);
+                return Ok(rent);
+            }
+            catch (Exception)
             {
-                BookId = bookId,
-                UserId = userId,
-                RentalDate = DateTime.UtcNow
-            };
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Error renting book");
+            }
 
-            _context.Rentals.Add(rental);
-            book.IsAvailable = false;
-            await _context.SaveChangesAsync();
-
-            return Ok("Book rented successfully");
         }
 
         [HttpPost("return/{rentalId}")]
         public async Task<ActionResult> ReturnBook(int rentalId)
         {
-            var rental = await _context.Rentals.FindAsync(rentalId);
-            if (rental == null)
-                return NotFound();
+            try
+            {
 
-            rental.ReturnDate = DateTime.UtcNow;
+                var rental = await _rentalRepository.GetRentalbyId(rentalId);
+                if (rental == null)
+                   return  NotFound($"BookRental with Id = {rentalId} not found");
 
-            var book = await _context.Books.FindAsync(rental.BookId);
-            if (book != null)
-                book.IsAvailable = true;
-
-            await _context.SaveChangesAsync();
-
+               rental = await _rentalRepository.ReturnBook(rentalId);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Error Returning book");
+            }
             return Ok("Book returned successfully");
         }
 
@@ -60,8 +72,10 @@ namespace BookRentalAPI.Controllers
         [HttpGet("rentalHistory")]
         public async Task<IEnumerable<Rental>> Get()
         {
-            return await _context.Rentals.ToListAsync();
+            return await _rentalRepository.GetAllRentalBooks();
         }
+
+       
 
     }
 }

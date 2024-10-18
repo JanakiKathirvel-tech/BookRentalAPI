@@ -1,4 +1,5 @@
 ﻿using BookRental.BusinessLayer.Interfaces;
+using BookRental.BusinessLayer.Repositories;
 using BookRental.EFCore;
 using BookRental.EFCore.DTO;
 using BookRentalAPI.Models;
@@ -46,6 +47,13 @@ namespace BookRentalAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     "Error retrieving data from the database");
             }
+        }
+
+        [HttpGet("stats")]
+        public async Task<ActionResult<BookStatisticsDto>> GetBookStatistics()
+        {
+            var stats = await bookRepository.GetBookStatisticsAsync();
+            return Ok(stats);
         }
 
     }
